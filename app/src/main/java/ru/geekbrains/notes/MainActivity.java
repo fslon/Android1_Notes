@@ -1,6 +1,7 @@
 package ru.geekbrains.notes;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         ListOfNotesFragment listOfNotesFragment = new ListOfNotesFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listOfNotesFragment).commit();
 
+        Log.d("-", "test branches");
 
     }
 
