@@ -3,7 +3,7 @@ package ru.geekbrains.notes;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +14,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
+
 
 public class CreateAndEditNoteFragment extends Fragment implements View.OnClickListener, Parcelable {
 
     Button saveButton;
     EditText nameOfNote;
     EditText textOfNote;
+    String name;
+
+    ArrayList<CreateAndEditNoteFragment> list;
+
+    public void setList(ArrayList<CreateAndEditNoteFragment> list) {
+        this.list = list;
+    }
 
     protected CreateAndEditNoteFragment(Parcel in) {
     }
@@ -40,9 +49,15 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
 
     }
 
-    public static CreateAndEditNoteFragment newInstance() {
+    public String getName() {
+        return name;
+    }
+
+    public static CreateAndEditNoteFragment newInstance(ArrayList<CreateAndEditNoteFragment> list) {
         CreateAndEditNoteFragment fragment = new CreateAndEditNoteFragment();
         Bundle args = new Bundle();
+        fragment.setList(list);
+//        args.putParcelable("CHANGE_THIS", CreateAndEditNoteFragment.this); // todo поменять ключ
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,15 +97,30 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View view) {
 
-        Editable name = nameOfNote.getText();
-        textOfNote.setText(name);
-
-
+//        Editable name = nameOfNote.getText();
+//        textOfNote.setText(name);
+//
+//
         Bundle bundle = new Bundle();
-        bundle.putParcelable("1", CreateAndEditNoteFragment.this);
+        bundle.putParcelable("CHANGE_THIS", CreateAndEditNoteFragment.this);
+//
+//        ((MainActivity) requireActivity()).test();
 
-        ((MainActivity) requireActivity()).test();
+//        if (getParentFragment() != null) {
+//            getParentFragment().setArguments(bundle);
+//        }
 
+        if (list != null) {
+            name = String.valueOf(list.toArray().length + 1);
+            list.add(CreateAndEditNoteFragment.this);
+            Log.d("--------", "here");
+        }
+
+        ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(list);
+//        listOfNotesFragment.setArguments(bundle);
+
+        if (getActivity() != null)
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listOfNotesFragment).commit();
     }
 
 
