@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    // насчет переопределений всяких методов по типу saveInstanceState
+
+    //todo сделать кликлисенер на текствью
 
     ArrayList<CreateAndEditNoteFragment> listOfNotes = new ArrayList<>();
 
@@ -20,11 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
         ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(listOfNotes);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listOfNotesFragment).commit();
-
-
-    }
-
-    public void test() {
 
     }
 

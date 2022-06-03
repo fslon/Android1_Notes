@@ -3,12 +3,12 @@ package ru.geekbrains.notes;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,7 +57,7 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
         CreateAndEditNoteFragment fragment = new CreateAndEditNoteFragment();
         Bundle args = new Bundle();
         fragment.setList(list);
-//        args.putParcelable("CHANGE_THIS", CreateAndEditNoteFragment.this); // todo поменять ключ
+//      args.putParcelable("CHANGE_THIS", CreateAndEditNoteFragment.this); // todo поменять ключ
         fragment.setArguments(args);
         return fragment;
     }
@@ -97,33 +97,24 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View view) {
 
-//        Editable name = nameOfNote.getText();
-//        textOfNote.setText(name);
-//
-//
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("CHANGE_THIS", CreateAndEditNoteFragment.this);
-//
-//        ((MainActivity) requireActivity()).test();
+        if (!nameOfNote.getText().toString().equals("")) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("CHANGE_THIS", CreateAndEditNoteFragment.this); // TODO: 03.06.2022 изменить ключ
 
-//        if (getParentFragment() != null) {
-//            getParentFragment().setArguments(bundle);
-//        }
+            if (list != null) {
+                name = nameOfNote.getText().toString();
+                list.add(CreateAndEditNoteFragment.this);
+            }
 
-        if (list != null) {
-            name = String.valueOf(list.toArray().length + 1);
-            list.add(CreateAndEditNoteFragment.this);
-            Log.d("--------", "here");
+            ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(list);
+
+            if (getActivity() != null)
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listOfNotesFragment).commit();
+        } else {
+            Toast toast = Toast.makeText(getContext(), "Введите название заметки", Toast.LENGTH_SHORT);
+            toast.show();
         }
-
-        ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(list);
-//        listOfNotesFragment.setArguments(bundle);
-
-        if (getActivity() != null)
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listOfNotesFragment).commit();
     }
-
-
     @Override
     public int describeContents() {
         return 0;

@@ -1,12 +1,15 @@
 package ru.geekbrains.notes;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,13 +48,22 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
     }
 
     private void displayPreviousNotes(View view) {
+
+        Context themeForList = new ContextThemeWrapper(getActivity().getBaseContext(), R.style.ThemeForList);
+
         LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
         if (listOfNotes != null) {
             for (int i = 0; i < listOfNotes.toArray().length; i++) {
                 if (listOfNotes.get(i).getName() != null) {
-                    EditText editText = new EditText(getContext());
-                    editText.setText(listOfNotes.get(i).getName());
-                    linearLayout.addView(editText);
+                    TextView textView = new TextView(themeForList);
+                    Log.d("*****   ", String.valueOf(textView.getId()));
+                    textView.setText(listOfNotes.get(i).getName());
+                    if (textView.getId() == -1)textView.setId(i);
+                    Log.d("99999999   ", String.valueOf(textView.getId()));
+//                    textView.setTextSize(30);
+
+//                    textView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greyForList));
+                    linearLayout.addView(textView);
                 }
             }
         }
