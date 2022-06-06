@@ -10,6 +10,7 @@ public class MainActivity extends AppCompatActivity {
     // насчет переопределений всяких методов по типу saveInstanceState
 
     //todo сделать кликлисенер на текствью
+    //todo сделать через newInstance (setArguments)
 
     ArrayList<CreateAndEditNoteFragment> listOfNotes = new ArrayList<>();
 

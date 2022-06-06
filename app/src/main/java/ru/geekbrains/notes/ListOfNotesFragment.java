@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -64,10 +65,17 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
 
 //                    textView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greyForList));
                     linearLayout.addView(textView);
+
+
+                    Space space = new Space(getContext()); //todo сделать с этим что то
+                    space.setMinimumHeight(10);
+                    linearLayout.addView(space);
+
                 }
             }
         }
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
