@@ -56,8 +56,8 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     public static CreateAndEditNoteFragment newInstance(ArrayList<CreateAndEditNoteFragment> list) {
         CreateAndEditNoteFragment fragment = new CreateAndEditNoteFragment();
         Bundle args = new Bundle();
-        fragment.setList(list);
-//      args.putParcelable("CHANGE_THIS", CreateAndEditNoteFragment.this); // todo поменять ключ
+
+        args.putParcelableArrayList("CHANGE_THIS", list); // todo поменять ключ
         fragment.setArguments(args);
         return fragment;
     }
@@ -94,8 +94,12 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
         super.onSaveInstanceState(outState);
     }
 
+
+
     @Override
     public void onClick(View view) {
+
+        if (getArguments() != null) list = getArguments().getParcelableArrayList("CHANGE_THIS");
 
         if (!nameOfNote.getText().toString().equals("")) {
             Bundle bundle = new Bundle();
@@ -115,6 +119,7 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
             toast.show();
         }
     }
+
     @Override
     public int describeContents() {
         return 0;

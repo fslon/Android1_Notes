@@ -19,28 +19,22 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 
-public class ListOfNotesFragment extends Fragment implements View.OnClickListener {
+public class ListOfNotesFragment extends Fragment implements View.OnClickListener, IntefaceWithList {
     Button btnCreateNewNote;
-    ArrayList<CreateAndEditNoteFragment> listOfNotes;
+    //    ArrayList<CreateAndEditNoteFragment> listOfNotes;
+    ArrayList<CreateAndEditNoteFragment> list = new ArrayList<>();
 
     public static ListOfNotesFragment newInstance(ArrayList<CreateAndEditNoteFragment> list) {
         ListOfNotesFragment fragment = new ListOfNotesFragment();
         Bundle args = new Bundle();
+        args.putParcelableArrayList("CHANGE_THIS", list);
         fragment.setArguments(args);
-        fragment.setListOfNotes(list);
         return fragment;
-    }
-
-    public void setListOfNotes(ArrayList<CreateAndEditNoteFragment> listOfNotes) {
-        this.listOfNotes = listOfNotes;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (listOfNotes != null) {
-//            listOfNotes.add(getArguments().getParcelable("CHANGE_THIS"));
-//        }
     }
 
     @Override
@@ -48,21 +42,40 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
         return inflater.inflate(R.layout.fragment_list_of_notes, container, false);
     }
 
-    private void displayPreviousNotes(View view) {
 
+    private void displayPreviousNotes(View view) {
         Context themeForList = new ContextThemeWrapper(getActivity().getBaseContext(), R.style.ThemeForList);
 
-        LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
-        if (listOfNotes != null) {
-            for (int i = 0; i < listOfNotes.toArray().length; i++) {
-                if (listOfNotes.get(i).getName() != null) {
-                    TextView textView = new TextView(themeForList);
-                    Log.d("*****   ", String.valueOf(textView.getId()));
-                    textView.setText(listOfNotes.get(i).getName());
-                    if (textView.getId() == -1)textView.setId(i);
-                    Log.d("99999999   ", String.valueOf(textView.getId()));
-//                    textView.setTextSize(30);
 
+         list = getArguments().getParcelableArrayList("CHANGE_THIS");
+
+//         Bundle bundle = new Bundle();
+//        bundle.putParcelableArrayList("CHANGE_THIS", list);
+//         onSaveInstanceState(bundle);
+
+        Log.d("000000",  list.toString());
+        Log.d("111111",  IntefaceWithList.list.toString());
+        IntefaceWithList.list.clear();
+
+        Log.d("------",  list.toString());
+        IntefaceWithList.list.addAll(list);
+
+
+
+        Log.d("22222",  IntefaceWithList.list.toString());
+
+//        getActivity().onSaveInstanceState(new Bundle());
+
+
+        LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
+        if (list != null) {
+            for (int i = 0; i < list.toArray().length; i++) {
+                if (list.get(i).getName() != null) {
+                    TextView textView = new TextView(themeForList);
+                    textView.setText(list.get(i).getName());
+                    if (textView.getId() == -1) textView.setId(i);
+
+//                    textView.setTextSize(30);
 //                    textView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greyForList));
                     linearLayout.addView(textView);
 
@@ -80,7 +93,7 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        displayPreviousNotes(view);
+        if (getArguments() != null) displayPreviousNotes(view);
         initViews(view);
     }
 
@@ -92,7 +105,9 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {     //TODO 1
 
-        CreateAndEditNoteFragment createAndEditNoteFragment = CreateAndEditNoteFragment.newInstance(listOfNotes);
+
+
+        CreateAndEditNoteFragment createAndEditNoteFragment = CreateAndEditNoteFragment.newInstance(list);
         if (getActivity() != null)
 //            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createAndEditNoteFragment).commit();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createAndEditNoteFragment).addToBackStack("").commit();
