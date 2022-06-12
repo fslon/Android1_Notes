@@ -26,10 +26,6 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
 
     ArrayList<CreateAndEditNoteFragment> list;
 
-    public void setList(ArrayList<CreateAndEditNoteFragment> list) {
-        this.list = list;
-    }
-
     protected CreateAndEditNoteFragment(Parcel in) {
     }
 
@@ -95,7 +91,6 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     }
 
 
-
     @Override
     public void onClick(View view) {
 
@@ -111,7 +106,6 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
             }
 
             ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(list);
-
             if (getActivity() != null)
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listOfNotesFragment).commit();
         } else {

@@ -2,7 +2,6 @@ package ru.geekbrains.notes;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +18,8 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 
-public class ListOfNotesFragment extends Fragment implements View.OnClickListener, IntefaceWithList {
+public class ListOfNotesFragment extends Fragment implements View.OnClickListener {
     Button btnCreateNewNote;
-    //    ArrayList<CreateAndEditNoteFragment> listOfNotes;
     ArrayList<CreateAndEditNoteFragment> list = new ArrayList<>();
 
     public static ListOfNotesFragment newInstance(ArrayList<CreateAndEditNoteFragment> list) {
@@ -47,25 +45,7 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
         Context themeForList = new ContextThemeWrapper(getActivity().getBaseContext(), R.style.ThemeForList);
 
 
-         list = getArguments().getParcelableArrayList("CHANGE_THIS");
-
-//         Bundle bundle = new Bundle();
-//        bundle.putParcelableArrayList("CHANGE_THIS", list);
-//         onSaveInstanceState(bundle);
-
-        Log.d("000000",  list.toString());
-        Log.d("111111",  IntefaceWithList.list.toString());
-        IntefaceWithList.list.clear();
-
-        Log.d("------",  list.toString());
-        IntefaceWithList.list.addAll(list);
-
-
-
-        Log.d("22222",  IntefaceWithList.list.toString());
-
-//        getActivity().onSaveInstanceState(new Bundle());
-
+        list = getArguments().getParcelableArrayList("CHANGE_THIS");
 
         LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
         if (list != null) {
@@ -74,9 +54,6 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
                     TextView textView = new TextView(themeForList);
                     textView.setText(list.get(i).getName());
                     if (textView.getId() == -1) textView.setId(i);
-
-//                    textView.setTextSize(30);
-//                    textView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.greyForList));
                     linearLayout.addView(textView);
 
 
@@ -106,10 +83,8 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {     //TODO 1
 
 
-
         CreateAndEditNoteFragment createAndEditNoteFragment = CreateAndEditNoteFragment.newInstance(list);
         if (getActivity() != null)
-//            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createAndEditNoteFragment).commit();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createAndEditNoteFragment).addToBackStack("").commit();
     }
 }
