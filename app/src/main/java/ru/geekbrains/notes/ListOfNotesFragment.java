@@ -52,6 +52,16 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
             for (int i = 0; i < list.toArray().length; i++) {
                 if (list.get(i).getName() != null) {
                     TextView textView = new TextView(themeForList);
+
+                    textView.setOnClickListener(view1 -> {
+                        list.get(textView.getId()).isEditNow = true;
+                        list.get(textView.getId()).myId = textView.getId();
+                        CreateAndEditNoteFragment createAndEditNoteFragment = list.get(textView.getId());
+                        if (getActivity() != null)
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createAndEditNoteFragment).addToBackStack("").commit();
+                    });
+
+
                     textView.setText(list.get(i).getName());
                     if (textView.getId() == -1) textView.setId(i);
                     linearLayout.addView(textView);
@@ -80,9 +90,7 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public void onClick(View view) {     //TODO 1
-
-
+    public void onClick(View view) {
         CreateAndEditNoteFragment createAndEditNoteFragment = CreateAndEditNoteFragment.newInstance(list);
         if (getActivity() != null)
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createAndEditNoteFragment).addToBackStack("").commit();

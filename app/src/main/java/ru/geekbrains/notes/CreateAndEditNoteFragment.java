@@ -23,6 +23,8 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     EditText nameOfNote;
     EditText textOfNote;
     String name;
+    boolean isEditNow = false;
+    int myId; // для редактирования (чтобы перезаписывалась именно эта заметка)
 
     ArrayList<CreateAndEditNoteFragment> list;
 
@@ -102,6 +104,8 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
 
             if (list != null) {
                 name = nameOfNote.getText().toString();
+                if (isEditNow) { list.remove(myId);
+                    isEditNow = false;}
                 list.add(CreateAndEditNoteFragment.this);
             }
 

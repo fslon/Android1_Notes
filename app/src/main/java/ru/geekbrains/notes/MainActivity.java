@@ -7,10 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    // насчет переопределений всяких методов по типу saveInstanceState
 
-    //todo сделать кликлисенер на текствью
-    //todo сделать через newInstance (setArguments)
+    //todo если зайти в редактирование заметки, повернуть экран и нажать "сохранить" то заметка запишется еще один раз (старая не удалится)
 
     ArrayList<CreateAndEditNoteFragment> listOfNotes = new ArrayList<>();
 
