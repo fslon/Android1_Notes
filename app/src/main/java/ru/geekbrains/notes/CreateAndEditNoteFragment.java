@@ -17,13 +17,13 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 
-public class CreateAndEditNoteFragment extends Fragment implements View.OnClickListener, Parcelable {
+public class CreateAndEditNoteFragment extends Fragment implements View.OnClickListener, Parcelable, InterfaceForListOfNotes {
 
-    Button saveButton;
-    EditText nameOfNote;
-    EditText textOfNote;
-    String name;
-    boolean isEditNow = false;
+    Button saveButton; // кнопка "сохранить"
+    EditText nameOfNote; // поле с названием заметки
+    EditText textOfNote; // поле с текстом заметки
+    String name; // название заметки
+    boolean isEditNow = false; // редактируется ли заметка сейчас
     int myId; // для редактирования (чтобы перезаписывалась именно эта заметка)
 
     ArrayList<CreateAndEditNoteFragment> list;
@@ -54,8 +54,7 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     public static CreateAndEditNoteFragment newInstance(ArrayList<CreateAndEditNoteFragment> list) {
         CreateAndEditNoteFragment fragment = new CreateAndEditNoteFragment();
         Bundle args = new Bundle();
-
-        args.putParcelableArrayList("CHANGE_THIS", list); // todo поменять ключ
+        args.putParcelableArrayList(InterfaceForListOfNotes.keyOfList, list);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,9 +62,7 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
+//        if (getArguments() != null) { }
     }
 
     @Override
@@ -88,27 +85,19 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
+    public void onClick(View view) { // кнопка "сохранить"
 
-
-    @Override
-    public void onClick(View view) {
-
-        if (getArguments() != null) list = getArguments().getParcelableArrayList("CHANGE_THIS");
+        if (getArguments() != null) list = getArguments().getParcelableArrayList(InterfaceForListOfNotes.keyOfList);
 
         if (!nameOfNote.getText().toString().equals("")) {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("CHANGE_THIS", CreateAndEditNoteFragment.this); // TODO: 03.06.2022 изменить ключ
-
             if (list != null) {
                 name = nameOfNote.getText().toString();
-                if (isEditNow) { list.remove(myId);
-                    isEditNow = false;}
+                if (isEditNow) {
+                    list.remove(myId); // если заметка редактируется, то ее старая версия удаляется
+                    isEditNow = false;
+                }
                 list.add(CreateAndEditNoteFragment.this);
             }
-
             ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(list);
             if (getActivity() != null)
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listOfNotesFragment).commit();

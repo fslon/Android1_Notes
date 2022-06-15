@@ -18,14 +18,15 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 
-public class ListOfNotesFragment extends Fragment implements View.OnClickListener {
-    Button btnCreateNewNote;
+public class ListOfNotesFragment extends Fragment implements View.OnClickListener, InterfaceForListOfNotes {
+    Button btnCreateNewNote; // кнопка "+" (создание новой заметки)
     ArrayList<CreateAndEditNoteFragment> list = new ArrayList<>();
+
 
     public static ListOfNotesFragment newInstance(ArrayList<CreateAndEditNoteFragment> list) {
         ListOfNotesFragment fragment = new ListOfNotesFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList("CHANGE_THIS", list);
+        args.putParcelableArrayList(InterfaceForListOfNotes.keyOfList, list);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,21 +42,20 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
     }
 
 
-    private void displayPreviousNotes(View view) {
-        Context themeForList = new ContextThemeWrapper(getActivity().getBaseContext(), R.style.ThemeForList);
+    private void displayPreviousNotes(View view) { // отображение списка заметок (если они есть)
+        Context themeForList = new ContextThemeWrapper(getActivity().getBaseContext(), R.style.ThemeForList); // создание темы для элементов списка заметок
 
-
-        list = getArguments().getParcelableArrayList("CHANGE_THIS");
+        list = getArguments().getParcelableArrayList(InterfaceForListOfNotes.keyOfList);
 
         LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
         if (list != null) {
             for (int i = 0; i < list.toArray().length; i++) {
                 if (list.get(i).getName() != null) {
-                    TextView textView = new TextView(themeForList);
+                    TextView textView = new TextView(themeForList); // добавление темы к textView с заметкой
 
-                    textView.setOnClickListener(view1 -> {
-                        list.get(textView.getId()).isEditNow = true;
-                        list.get(textView.getId()).myId = textView.getId();
+                    textView.setOnClickListener(view1 -> { // к textView с заметкой добавляется кликлисенер, при нажатии меняется фрагмент на редактирование заметки
+                        list.get(textView.getId()).isEditNow = true; // так как в этот лисенер заходим только после нажатия на существующую заметку - переход в режим редактирования
+                        list.get(textView.getId()).myId = textView.getId(); // передается id(index) конкретной заметки в фрагмент с редактрованием
                         CreateAndEditNoteFragment createAndEditNoteFragment = list.get(textView.getId());
                         if (getActivity() != null)
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createAndEditNoteFragment).addToBackStack("").commit();
@@ -67,7 +67,7 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
                     linearLayout.addView(textView);
 
 
-                    Space space = new Space(getContext()); //todo сделать с этим что то
+                    Space space = new Space(getContext()); // пустое пространство после заметки для отделения их друг от друга //todo применить что-то по типу стиля для улучшения кода
                     space.setMinimumHeight(10);
                     linearLayout.addView(space);
 
