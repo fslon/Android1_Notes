@@ -1,6 +1,7 @@
 package ru.geekbrains.notes;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -18,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 
-public class ListOfNotesFragment extends Fragment implements View.OnClickListener, InterfaceForListOfNotes {
+public class ListOfNotesFragment extends Fragment implements InterfaceForListOfNotes {
     Button btnCreateNewNote; // кнопка "+" (создание новой заметки)
     ArrayList<CreateAndEditNoteFragment> list = new ArrayList<>();
 
@@ -33,6 +34,7 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        requireActivity().getSupportFragmentManager().popBackStack();
         super.onCreate(savedInstanceState);
     }
 
@@ -57,8 +59,9 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
                         list.get(textView.getId()).isEditNow = true; // так как в этот лисенер заходим только после нажатия на существующую заметку - переход в режим редактирования
                         list.get(textView.getId()).myId = textView.getId(); // передается id(index) конкретной заметки в фрагмент с редактрованием
                         CreateAndEditNoteFragment createAndEditNoteFragment = list.get(textView.getId());
+
                         if (getActivity() != null)
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createAndEditNoteFragment).addToBackStack("").commit();
+                            startFragmentDependingOnOrientation(createAndEditNoteFragment);
                     });
 
 
@@ -76,6 +79,13 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    private void startFragmentDependingOnOrientation(CreateAndEditNoteFragment createAndEditNoteFragment) { // запуск фрагмента в зависимости от ориентации экрана
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, createAndEditNoteFragment).addToBackStack("").commit();
+        else if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_with_edit_note, createAndEditNoteFragment).commit();
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -86,15 +96,17 @@ public class ListOfNotesFragment extends Fragment implements View.OnClickListene
 
     private void initViews(View view) {
         btnCreateNewNote = view.findViewById(R.id.createNewNote);
-        btnCreateNewNote.setOnClickListener(this);
+    btnCreateNewNote.setOnClickListener(view1 -> {
+            CreateAndEditNoteFragment createAndEditNoteFragment = CreateAndEditNoteFragment.newInstance(list);
+            if (getActivity() != null)
+//            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, createAndEditNoteFragment).addToBackStack("").commit();
+                startFragmentDependingOnOrientation(createAndEditNoteFragment);
+        });
+
+
     }
 
-    @Override
-    public void onClick(View view) {
-        CreateAndEditNoteFragment createAndEditNoteFragment = CreateAndEditNoteFragment.newInstance(list);
-        if (getActivity() != null)
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createAndEditNoteFragment).addToBackStack("").commit();
-    }
+
 }
 
 

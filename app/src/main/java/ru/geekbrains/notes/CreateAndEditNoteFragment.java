@@ -62,7 +62,6 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) { }
     }
 
     @Override
@@ -81,7 +80,6 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
         saveButton.setOnClickListener(this);
         nameOfNote = view.findViewById(R.id.nameOfNoteEditText);
         textOfNote = view.findViewById(R.id.textOfNoteEditText);
-
     }
 
     @Override
@@ -92,15 +90,19 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
         if (!nameOfNote.getText().toString().equals("")) {
             if (list != null) {
                 name = nameOfNote.getText().toString();
-                if (isEditNow) {
-                    list.remove(myId); // если заметка редактируется, то ее старая версия удаляется
-                    isEditNow = false;
+                for (int i = 0; i < list.toArray().length; i++) {
+
+                    if (isEditNow & list.get(i).getName().equals(list.get(myId).getName())) {
+                        list.remove(i);
+                        isEditNow = false;
+                    } else if (list.get(i).getName().equals(name))
+                        list.remove(i); //todo
                 }
                 list.add(CreateAndEditNoteFragment.this);
             }
             ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(list);
             if (getActivity() != null)
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listOfNotesFragment).commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, listOfNotesFragment).commit();
         } else {
             Toast toast = Toast.makeText(getContext(), "Введите название заметки", Toast.LENGTH_SHORT);
             toast.show();
