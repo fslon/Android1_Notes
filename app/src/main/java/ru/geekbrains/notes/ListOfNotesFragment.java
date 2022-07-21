@@ -64,16 +64,13 @@ public class ListOfNotesFragment extends Fragment implements InterfaceForListOfN
                             startFragmentDependingOnOrientation(createAndEditNoteFragment);
                     });
 
-
-                    textView.setText(list.get(i).getName());
+                    textView.setText(list.get(i).getName() + "     [" + list.get(i).getTimeOfCreation() + "]"); // название заметки + время создания/редактирования
                     if (textView.getId() == -1) textView.setId(i);
                     linearLayout.addView(textView);
-
 
                     Space space = new Space(getContext()); // пустое пространство после заметки для отделения их друг от друга //todo применить что-то по типу стиля для улучшения кода
                     space.setMinimumHeight(10);
                     linearLayout.addView(space);
-
                 }
             }
         }
@@ -92,11 +89,12 @@ public class ListOfNotesFragment extends Fragment implements InterfaceForListOfN
         super.onViewCreated(view, savedInstanceState);
         if (getArguments() != null) displayPreviousNotes(view);
         initViews(view);
+
     }
 
     private void initViews(View view) {
         btnCreateNewNote = view.findViewById(R.id.createNewNote);
-    btnCreateNewNote.setOnClickListener(view1 -> {
+        btnCreateNewNote.setOnClickListener(view1 -> {
             CreateAndEditNoteFragment createAndEditNoteFragment = CreateAndEditNoteFragment.newInstance(list);
             if (getActivity() != null)
 //            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, createAndEditNoteFragment).addToBackStack("").commit();

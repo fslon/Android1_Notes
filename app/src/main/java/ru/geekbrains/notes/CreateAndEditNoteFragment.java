@@ -14,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class CreateAndEditNoteFragment extends Fragment implements View.OnClickListener, Parcelable, InterfaceForListOfNotes {
@@ -25,6 +27,15 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     String name; // название заметки
     boolean isEditNow = false; // редактируется ли заметка сейчас
     int myId; // для редактирования (чтобы перезаписывалась именно эта заметка)
+    String timeOfCreation; // время создания/редактирования заметки
+
+    public String getTimeOfCreation() {
+        return timeOfCreation;
+    }
+
+    public void setTimeOfCreation(String timeOfCreation) {
+        this.timeOfCreation = timeOfCreation;
+    }
 
     ArrayList<CreateAndEditNoteFragment> list;
 
@@ -92,12 +103,13 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
                 name = nameOfNote.getText().toString();
                 for (int i = 0; i < list.toArray().length; i++) {
 
-                    if (isEditNow & list.get(i).getName().equals(list.get(myId).getName())) {
+                    if (isEditNow & list.get(i).getName().equals(list.get(myId).getName())) { // если заметка в данный момент редактируется  и в списке заметок есть заметка с таким же id, то последняя удаляется
                         list.remove(i);
                         isEditNow = false;
-                    } else if (list.get(i).getName().equals(name))
-                        list.remove(i); //todo
+                    } else if (list.get(i).getName().equals(name)) // если в списке заметок есть заметка с таким же названием, то она удаляется
+                        list.remove(i);
                 }
+                setTimeOfCreation(DateFormat.getTimeInstance().format(Calendar.getInstance().getTime())); // добавляет текущее время
                 list.add(CreateAndEditNoteFragment.this);
             }
             ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(list);
