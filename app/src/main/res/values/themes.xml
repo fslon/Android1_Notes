@@ -19,7 +19,34 @@
         <item name="android:textSize">30sp</item>
         <item name="android:inset">100dp</item>
         <item name="android:background">@color/greyForList</item>
-
     </style>
 
+    <style name="Theme.Notes.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Notes.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <style name="Theme.Notes.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
 </resources>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,9 +1,13 @@
 package ru.geekbrains.notes;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -77,7 +81,17 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_create_and_edit_note, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
+        MenuItem searchItem = menu.findItem(R.id.action_search); // кнопка "искать" в тулбаре
+        if (searchItem != null & getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) searchItem.setVisible(true); // показать кнопку поиска в этом фрагменте (если ориентация альбомная)
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
