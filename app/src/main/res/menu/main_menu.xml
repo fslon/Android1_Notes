@@ -15,5 +15,12 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_exit"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        android:orderInCategory="80"
+        android:title="Exit"
+        app:showAsAction="ifRoom" />
+
 
 </menu>

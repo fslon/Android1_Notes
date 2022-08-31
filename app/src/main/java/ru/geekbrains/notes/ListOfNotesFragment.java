@@ -38,7 +38,7 @@ public class ListOfNotesFragment extends Fragment implements InterfaceForListOfN
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        requireActivity().getSupportFragmentManager().popBackStack();
+        requireActivity().getSupportFragmentManager().popBackStack(); //todo понять зачем
         super.onCreate(savedInstanceState);
     }
 
@@ -68,46 +68,88 @@ public class ListOfNotesFragment extends Fragment implements InterfaceForListOfN
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                System.out.println("1212121212");
+
                 return false;
             }
         });
-
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
 
-    private void displayPreviousNotes(View view) { // отображение списка заметок (если они есть)
-        Context themeForList = new ContextThemeWrapper(getActivity().getBaseContext(), R.style.ThemeForList); // создание темы для элементов списка заметок
-
+    private void displayNote(View view, int indexNumber) { // indexNumber - номер по порядку в массиве (номер заметки)
+        Context themeForList = new ContextThemeWrapper(getActivity().getBaseContext(), R.style.ThemeForList); // создание темы для элементов списка заметок //todo возможно здесь каждый раз создается новый ContextThemeWrapper, что замедляет работу. Возможное решение проблемы - создавать его один раз в методе откуда вызывается отображение заметки
         list = getArguments().getParcelableArrayList(InterfaceForListOfNotes.keyOfList);
 
         LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
+
         if (list != null) {
-            for (int i = 0; i < list.toArray().length; i++) {
-                if (list.get(i).getName() != null) {
-                    TextView textView = new TextView(themeForList); // добавление темы к textView с заметкой
+//            System.out.println(list.toString());
+//            if (list.get(indexNumber).getName() != null) {
+            TextView textView = new TextView(themeForList); // добавление темы к textView с заметкой
 
-                    textView.setOnClickListener(view1 -> { // к textView с заметкой добавляется кликлисенер, при нажатии меняется фрагмент на редактирование заметки
-                        list.get(textView.getId()).isEditNow = true; // так как в этот лисенер заходим только после нажатия на существующую заметку - переход в режим редактирования
-                        list.get(textView.getId()).myId = textView.getId(); // передается id(index) конкретной заметки в фрагмент с редактрованием
-                        CreateAndEditNoteFragment createAndEditNoteFragment = list.get(textView.getId());
+            textView.setOnClickListener(view1 -> { // к textView с заметкой добавляется кликлисенер, при нажатии меняется фрагмент на редактирование заметки
+                list.get(textView.getId()).isEditNow = true; // так как в этот лисенер заходим только после нажатия на существующую заметку - переход в режим редактирования
+                list.get(textView.getId()).myId = textView.getId(); // передается id(index) конкретной заметки в фрагмент с редактрованием
+                CreateAndEditNoteFragment createAndEditNoteFragment = list.get(textView.getId());
 
-                        if (getActivity() != null)
-                            startFragmentDependingOnOrientation(createAndEditNoteFragment);
-                    });
+                if (getActivity() != null)
+                    startFragmentDependingOnOrientation(createAndEditNoteFragment);
+            });
 
-                    textView.setText(list.get(i).getName() + "     [" + list.get(i).getTimeOfCreation() + "]"); // название заметки + время создания/редактирования
-                    if (textView.getId() == -1) textView.setId(i);
-                    linearLayout.addView(textView);
+            textView.setText(list.get(indexNumber).getName() + "     [" + list.get(indexNumber).getTimeOfCreation() + "]"); // название заметки + время создания/редактирования
+            if (textView.getId() == -1) textView.setId(indexNumber);
+            registerForContextMenu(textView); // подписка на контекстное меню
+            linearLayout.addView(textView);
 
-                    Space space = new Space(getContext()); // пустое пространство после заметки для отделения их друг от друга //todo применить что-то по типу стиля для улучшения кода
-                    space.setMinimumHeight(10);
-                    linearLayout.addView(space);
-                }
-            }
+            Space space = new Space(getContext()); // пустое пространство после заметки для отделения их друг от друга //todo применить что-то по типу стиля для улучшения кода
+            space.setMinimumHeight(10);
+            linearLayout.addView(space);
+
+
         }
+
+    }
+
+
+    private void displayPreviousNotes(View view) { // отображение списка заметок (если они есть) [[[OLD]]]
+
+
+        list = getArguments().getParcelableArrayList(InterfaceForListOfNotes.keyOfList);
+
+        for (int i = 0; i < list.toArray().length; i++) {
+            displayNote(view, i);
+        }
+
+
+//        Context themeForList = new ContextThemeWrapper(getActivity().getBaseContext(), R.style.ThemeForList); // создание темы для элементов списка заметок
+//
+//        list = getArguments().getParcelableArrayList(InterfaceForListOfNotes.keyOfList);
+//
+//        LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
+//        if (list != null) {
+//            for (int i = 0; i < list.toArray().length; i++) {
+//                if (list.get(i).getName() != null) {
+//                    TextView textView = new TextView(themeForList); // добавление темы к textView с заметкой
+//
+//                    textView.setOnClickListener(view1 -> { // к textView с заметкой добавляется кликлисенер, при нажатии меняется фрагмент на редактирование заметки
+//                        list.get(textView.getId()).isEditNow = true; // так как в этот лисенер заходим только после нажатия на существующую заметку - переход в режим редактирования
+//                        list.get(textView.getId()).myId = textView.getId(); // передается id(index) конкретной заметки в фрагмент с редактрованием
+//                        CreateAndEditNoteFragment createAndEditNoteFragment = list.get(textView.getId());
+//
+//                        if (getActivity() != null)
+//                            startFragmentDependingOnOrientation(createAndEditNoteFragment);
+//                    });
+//
+//                    textView.setText(list.get(i).getName() + "     [" + list.get(i).getTimeOfCreation() + "]"); // название заметки + время создания/редактирования
+//                    if (textView.getId() == -1) textView.setId(i);
+//                    linearLayout.addView(textView);
+//
+//                    Space space = new Space(getContext()); // пустое пространство после заметки для отделения их друг от друга //todo применить что-то по типу стиля для улучшения кода
+//                    space.setMinimumHeight(10);
+//                    linearLayout.addView(space);
+//                }
+//            }
+//        }
     }
 
     private void startFragmentDependingOnOrientation(CreateAndEditNoteFragment createAndEditNoteFragment) { // запуск фрагмента в зависимости от ориентации экрана
