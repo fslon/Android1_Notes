@@ -89,7 +89,8 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
         MenuItem searchItem = menu.findItem(R.id.action_search); // кнопка "искать" в тулбаре
-        if (searchItem != null & getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) searchItem.setVisible(true); // показать кнопку поиска в этом фрагменте (если ориентация альбомная)
+        if (searchItem != null & getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            searchItem.setVisible(true); // показать кнопку поиска в этом фрагменте (если ориентация альбомная)
 
         super.onCreateOptionsMenu(menu, inflater);
     }
