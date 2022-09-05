@@ -7,10 +7,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
@@ -21,17 +27,54 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<CreateAndEditNoteFragment> listOfNotes = new ArrayList<>(); // массив, в котором хранятся фрагменты с заметками
 
     private View viewOfNote; // view для контекстного меню текущей заметки (для понимания, какую именно заметку удалять)
-
+    DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initDrawer();
         if (savedInstanceState == null) {
             ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(listOfNotes);
             getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, listOfNotesFragment).commit();
         }
     }
+
+    private void initDrawer() { // инициализация бокового меню
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+
+
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(item -> {
+
+            switch (item.getItemId()) {
+                case (R.id.action_settings_navigation): //todo сделать настройки
+                    Toast.makeText(getBaseContext(), "Настройки (soon)", Toast.LENGTH_SHORT).show();
+                    mDrawerLayout.close();
+                    return true;
+            }
+
+            return false;
+        });
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//
+//        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            mDrawerLayout.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -91,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_exit: // выход из приложения
                 finish();
+                return true;
+
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);  // OPEN DRAWER
                 return true;
 
         }
