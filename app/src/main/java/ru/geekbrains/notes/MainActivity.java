@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
@@ -33,20 +34,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initDrawer();
+        initToolbar();
+
         if (savedInstanceState == null) {
             ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(listOfNotes);
             getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, listOfNotesFragment).commit();
         }
     }
 
-    private void initDrawer() { // инициализация бокового меню
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    //todo поменять цвет элементов тулбара (создать новый для светлой и темной темы)
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        initDrawer(toolbar);
+    }
+
+    private void initDrawer(Toolbar toolbar) { // инициализация бокового меню
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
 
 

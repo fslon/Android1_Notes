@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="greyForList">#D1CCCC</color>
     <color name="header_drawer">#A1C7FF</color>
+    <color name="colorForHeaderOfApp">#EBF0FF</color>
 </resources>

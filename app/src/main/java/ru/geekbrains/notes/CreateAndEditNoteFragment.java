@@ -1,5 +1,6 @@
 package ru.geekbrains.notes;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -10,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -133,6 +135,16 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
         } else {
             Toast toast = Toast.makeText(getContext(), "Введите название заметки", Toast.LENGTH_SHORT);
             toast.show();
+        }
+
+        hideKeyboard();
+    }
+
+    private void hideKeyboard() { // спрятать клавиатуру при переходе в другой фрагмент
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
