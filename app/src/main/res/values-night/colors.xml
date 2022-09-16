@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="header_drawer">#1943A4</color>
-
+    <color name="color_toolbar">#2E0052</color>
+    <color name="colorForListBackground">#5A0061</color>
+    <color name="colorForListText">#BCBCBC</color>
 </resources>
