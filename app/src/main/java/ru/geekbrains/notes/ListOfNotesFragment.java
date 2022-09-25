@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
 
@@ -80,7 +79,7 @@ public class ListOfNotesFragment extends Fragment implements InterfaceForListOfN
         Context themeForList = new ContextThemeWrapper(getActivity().getBaseContext(), R.style.ThemeForList); // создание темы для элементов списка заметок //todo возможно здесь каждый раз создается новый ContextThemeWrapper, что замедляет работу. Возможное решение проблемы - создавать его один раз в методе откуда вызывается отображение заметки
         list = getArguments().getParcelableArrayList(InterfaceForListOfNotes.keyOfList);
 
-        LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
+//        LinearLayout linearLayout = view.findViewById(R.id.linearLayout);
 
         if (list != null) {
 //            System.out.println(list.toString());
@@ -99,11 +98,11 @@ public class ListOfNotesFragment extends Fragment implements InterfaceForListOfN
             textView.setText(list.get(indexNumber).getName() + "     [" + list.get(indexNumber).getTimeOfCreation() + "]"); // название заметки + время создания/редактирования
             if (textView.getId() == -1) textView.setId(indexNumber);
             registerForContextMenu(textView); // подписка на контекстное меню
-            linearLayout.addView(textView);
+//            linearLayout.addView(textView);
 
             Space space = new Space(getContext()); // пустое пространство после заметки для отделения их друг от друга //todo применить что-то по типу стиля для улучшения кода
             space.setMinimumHeight(10);
-            linearLayout.addView(space);
+//            linearLayout.addView(space);
 
 
         }

@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,8 +36,10 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
 
         if (savedInstanceState == null) {
-            ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(listOfNotes);
-            getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, listOfNotesFragment).commit();
+//            ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(listOfNotes);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, listOfNotesFragment).commit();
+            RecyclerViewWithNotesFragment recyclerViewWithNotesFragment = RecyclerViewWithNotesFragment.newInstance(listOfNotes);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, recyclerViewWithNotesFragment).commit();
         }
     }
 
@@ -106,11 +107,11 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.context_action_delete:
-                listOfNotes = getSupportFragmentManager().findFragmentById(R.id.container_with_notes).getArguments().getParcelableArrayList(InterfaceForListOfNotes.keyOfList); // обновление массива заметок
-                LinearLayout linear = findViewById(R.id.linearLayout); // поиск layout с textView заметок
-                linear.removeView(viewOfNote); // удаление textView
-                listOfNotes.remove(viewOfNote.getId()); // удаление фрагмента из массива
-                recreate(); // пересоздание активити для обновления списка
+//                listOfNotes = getSupportFragmentManager().findFragmentById(R.id.container_with_notes).getArguments().getParcelableArrayList(InterfaceForListOfNotes.keyOfList); // обновление массива заметок
+//                LinearLayout linear = findViewById(R.id.linearLayout); // поиск layout с textView заметок
+//                linear.removeView(viewOfNote); // удаление textView
+//                listOfNotes.remove(viewOfNote.getId()); // удаление фрагмента из массива
+//                recreate(); // пересоздание активити для обновления списка
                 break;
 
             default:

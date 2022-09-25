@@ -59,6 +59,12 @@
         <item name="android:background">@color/colorForListBackground</item>
     </style>
 
+    <style name="ThemeForRecyclerItems" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="android:textColor">@color/colorForListText</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:inset">100dp</item>
+    </style>
+
 
     <style name="Theme.Notes.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
