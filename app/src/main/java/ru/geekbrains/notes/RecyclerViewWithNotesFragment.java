@@ -39,18 +39,18 @@ public class RecyclerViewWithNotesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recycler_view_with_notes, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         list = getArguments().getParcelableArrayList(InterfaceForListOfNotes.keyOfList);
-
-        if (recyclerView != null) initRecyclerView(recyclerView, list);
+        CardsSource data = new CardsSourceImpl(getResources()).init();
+        if (recyclerView != null) initRecyclerView(recyclerView, list, data);
 
         return view;
     }
 
-    private void initRecyclerView(RecyclerView recyclerView, ArrayList<CreateAndEditNoteFragment> list) {
+    private void initRecyclerView(RecyclerView recyclerView, ArrayList<CreateAndEditNoteFragment> list, CardsSource data) {
 //        recyclerView.setHasFixedSize(true); //todo попробовать убрать
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        NotesAdapter adapter = new NotesAdapter(list);
+        NotesAdapter adapter = new NotesAdapter(list,data);
         recyclerView.setAdapter(adapter);
     }
 

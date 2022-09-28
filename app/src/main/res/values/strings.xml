@@ -12,4 +12,14 @@
     <string name="navigation_name">Name</string>
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
+    <string name="string_1_for_card">1 заметка</string>
+    <string name="string_2_for_card">2 заметка</string>
+    <string name="string_3_for_card">3 заметка</string>
+    <string name="string_4_for_card">4 заметка</string>
+    <string name="string_5_for_card">5 заметка</string>
+    <string name="string_6_for_card">6 заметка</string>
+    <string name="string_7_for_card">7 заметка</string>
+    <string name="string_8_for_card">8 заметка</string>
+    <string name="string_9_for_card">9 заметка</string>
+    <string name="string_10_for_card">10 заметка</string>
 </resources>
