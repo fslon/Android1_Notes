@@ -36,12 +36,32 @@ public class CardsSourceImpl implements CardsSource {
         return answer;
     }
 
-    public CardData getCardData(int position){
+    public CardData getCardData(int position) {
         return dataSource.get(position);
     }
 
-    public int size(){
+    public int size() {
         return dataSource.size();
+    }
+
+    @Override
+    public void deleteCarData(int position) {
+        dataSource.remove(position);
+    }
+
+    @Override
+    public void updateCardData(int position, CardData cardData) {
+        dataSource.set(position, cardData);
+    }
+
+    @Override
+    public void addCardData(CardData cardData) {
+        dataSource.add(cardData);
+    }
+
+    @Override
+    public void clearCardData() {
+        dataSource.clear();
     }
 
 

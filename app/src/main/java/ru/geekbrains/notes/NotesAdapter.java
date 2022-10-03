@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> { // 2 шаг
+
     ArrayList<CreateAndEditNoteFragment> list;
     private final CardsSource dataSource;
+    private OnItemClickListener itemClickListener;
 
     public NotesAdapter(ArrayList<CreateAndEditNoteFragment> list, CardsSource dataSource) {
 
@@ -33,6 +35,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.getNameView().setText(list.get(position).getName());
         holder.getDateView().setText(list.get(position).getTimeOfCreation());
 
+
         holder.setData(dataSource.getCardData(position));
     }
 
@@ -41,6 +44,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     public int getItemCount() {
         return list.toArray().length;
         //return dataSource.size();
+    }
+
+    public void SetOnItemClickListener(OnItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
+
+
+    public interface OnItemClickListener {
+        void onItemClick (View view, int position);
     }
 
 
@@ -59,6 +71,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
             title = itemView.findViewById(R.id.number_of_note_for_card);
             avatarOfNote = itemView.findViewById(R.id.avatar_recycler_for_card);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemClickListener!=null){
+                        itemClickListener.onItemClick(v, getAdapterPosition());
+                    }
+                }
+            });
         }
 
         public void setData(CardData cardData){
