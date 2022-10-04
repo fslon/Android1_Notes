@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -16,11 +17,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     ArrayList<CreateAndEditNoteFragment> list;
     private final CardsSource dataSource;
     private OnItemClickListener itemClickListener;
+    private final Fragment fragment; // фрагмент для контекстного меню
+    private int menuPosition; // для контекст меню
 
-    public NotesAdapter(ArrayList<CreateAndEditNoteFragment> list, CardsSource dataSource) {
+    public NotesAdapter(ArrayList<CreateAndEditNoteFragment> list, CardsSource dataSource, Fragment fragment) {
 
         this.dataSource = dataSource;
         this.list = list;
+        this.fragment = fragment;
+    }
+
+    public int getMenuPosition() {
+        return menuPosition;
     }
 
     @NonNull
@@ -64,6 +72,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         private final AppCompatImageView avatarOfNote;
 
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameView = itemView.findViewById(R.id.recycler_item_name);
@@ -71,6 +80,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
             title = itemView.findViewById(R.id.number_of_note_for_card);
             avatarOfNote = itemView.findViewById(R.id.avatar_recycler_for_card);
+
+            registerContextMenu(itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,6 +91,23 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                     }
                 }
             });
+
+           itemView.setOnLongClickListener(new View.OnLongClickListener() {
+               @Override
+               public boolean onLongClick(View v) {
+                   menuPosition = getLayoutPosition();
+                   itemView.showContextMenu();
+                   return true;
+               }
+           });
+
+        }
+
+        private void registerContextMenu(View itemView) {
+            if (fragment != null) {
+
+                fragment.registerForContextMenu(itemView);
+            }
         }
 
         public void setData(CardData cardData){

@@ -2,6 +2,7 @@ package ru.geekbrains.notes;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,11 +25,6 @@ public class RecyclerViewWithNotesFragment extends Fragment {
     private CardsSource data;
     private NotesAdapter adapter;
     private RecyclerView recyclerView;
-
-
-    // TODO: 03.10.2022  сделать поля в редактировании для смены картинки (вводить например число и брать из ресурсов картинку под таким же номером (есть часть кодаБ надо искать))
-
-
 
 
     public static RecyclerViewWithNotesFragment newInstance(ArrayList<CreateAndEditNoteFragment> list) {
@@ -62,11 +58,11 @@ public class RecyclerViewWithNotesFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-//        recyclerView.setHasFixedSize(true); //todo попробовать убрать
+//        recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new NotesAdapter(list, data);
+        adapter = new NotesAdapter(list, data, this);
         recyclerView.setAdapter(adapter);
 
         adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
@@ -85,6 +81,9 @@ public class RecyclerViewWithNotesFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+
+
         Button btnCreateNewNote; // кнопка "+" (создание новой заметки)
         btnCreateNewNote = view.findViewById(R.id.createNewNote);
 
@@ -139,7 +138,35 @@ public class RecyclerViewWithNotesFragment extends Fragment {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_with_edit_note, createAndEditNoteFragment).commit();
     }
 
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = requireActivity().getMenuInflater();
+        inflater.inflate(R.menu.context_menu_for_recycler, menu);
 
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        int position = adapter.getMenuPosition();
+        switch (item.getItemId()) {
+
+            case R.id.recycler_context_item_change:
+                data.updateCardData(position, new CardData(R.drawable.card10,data.getCardData(position).getTitle() ));
+                adapter.notifyItemChanged(position);
+                return true;
+
+            case R.id.recycler_context_item_remove:
+                data.deleteCardData(position);
+                list.remove(position);
+                adapter.notifyItemRemoved(position);
+                return true;
+
+        }
+
+
+        return super.onContextItemSelected(item);
+    }
 }
 
 

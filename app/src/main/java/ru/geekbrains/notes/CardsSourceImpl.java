@@ -45,7 +45,7 @@ public class CardsSourceImpl implements CardsSource {
     }
 
     @Override
-    public void deleteCarData(int position) {
+    public void deleteCardData(int position) {
         dataSource.remove(position);
     }
 
