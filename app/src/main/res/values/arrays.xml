@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="titlesForCards">
+        <item>@string/string_1_for_card</item>
+        <item>@string/string_2_for_card</item>
+        <item>@string/string_3_for_card</item>
+        <item>@string/string_4_for_card</item>
+        <item>@string/string_5_for_card</item>
+        <item>@string/string_6_for_card</item>
+        <item>@string/string_7_for_card</item>
+        <item>@string/string_8_for_card</item>
+        <item>@string/string_9_for_card</item>
+        <item>@string/string_10_for_card</item>
+    </string-array>
+
+    <array name="picturesForCards">
+        <item>@drawable/card1</item>
+        <item>@drawable/card2</item>
+        <item>@drawable/card3</item>
+        <item>@drawable/card4</item>
+        <item>@drawable/card5</item>
+        <item>@drawable/card6</item>
+        <item>@drawable/card7</item>
+        <item>@drawable/card8</item>
+        <item>@drawable/card9</item>
+        <item>@drawable/card10</item>
+    </array>
+
+
+</resources>
