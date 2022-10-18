@@ -118,4 +118,31 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    private void showDialogFragmentOfExit() { // диалог "хотите ли вы выйти из приложения?". срабатывает при зактрытии приложения
+        new ExitDialogFragment().show(getSupportFragmentManager(), ExitDialogFragment.TAG);
+    }
+
+    @Override
+    public void finish() {
+      showDialogFragmentOfExit();
+//        super.finish();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
