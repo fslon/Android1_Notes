@@ -129,12 +129,12 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
                 setTimeOfCreation(DateFormat.getTimeInstance().format(Calendar.getInstance().getTime())); // добавляет текущее время
                 list.add(CreateAndEditNoteFragment.this);
             }
-//            ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(list);
-            RecyclerViewWithNotesFragment recyclerViewWithNotesFragment = RecyclerViewWithNotesFragment.newInstance(list);
+////            ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(list);
+//            RecyclerViewWithNotesFragment recyclerViewWithNotesFragment = RecyclerViewWithNotesFragment.newInstance(list);
 
             if (getActivity() != null)
 //                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, listOfNotesFragment).commit();
-                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, recyclerViewWithNotesFragment).commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, getParentFragmentManager().findFragmentByTag("recyclerFragment")).commit();
         } else {
             Toast toast = Toast.makeText(getContext(), "Введите название заметки", Toast.LENGTH_SHORT);
             toast.show();

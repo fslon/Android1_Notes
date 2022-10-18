@@ -1,11 +1,8 @@
 package ru.geekbrains.notes;
 
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<CreateAndEditNoteFragment> listOfNotes = new ArrayList<>(); // массив, в котором хранятся фрагменты с заметками
 
-    private View viewOfNote; // view для контекстного меню текущей заметки (для понимания, какую именно заметку удалять)
     DrawerLayout mDrawerLayout;
 
     @Override
@@ -39,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 //            ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(listOfNotes);
 //            getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, listOfNotesFragment).commit();
             RecyclerViewWithNotesFragment recyclerViewWithNotesFragment = RecyclerViewWithNotesFragment.newInstance(listOfNotes);
-            getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, recyclerViewWithNotesFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container_with_notes, recyclerViewWithNotesFragment, "recyclerFragment").commit();
         }
     }
 
@@ -86,39 +82,6 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-
-//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-//        testView = info.targetView;
-
-        viewOfNote = v; // присваивание к viewOfNote textView заметки
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu, menu);
-
-
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.context_action_delete:
-//                listOfNotes = getSupportFragmentManager().findFragmentById(R.id.container_with_notes).getArguments().getParcelableArrayList(InterfaceForListOfNotes.keyOfList); // обновление массива заметок
-//                LinearLayout linear = findViewById(R.id.linearLayout); // поиск layout с textView заметок
-//                linear.removeView(viewOfNote); // удаление textView
-//                listOfNotes.remove(viewOfNote.getId()); // удаление фрагмента из массива
-//                recreate(); // пересоздание активити для обновления списка
-                break;
-
-            default:
-                return super.onContextItemSelected(item);
-        }
-        return true;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -155,4 +118,31 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    private void showDialogFragmentOfExit() { // диалог "хотите ли вы выйти из приложения?". срабатывает при зактрытии приложения
+        new ExitDialogFragment().show(getSupportFragmentManager(), ExitDialogFragment.TAG);
+    }
+
+    @Override
+    public void finish() {
+      showDialogFragmentOfExit();
+//        super.finish();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
