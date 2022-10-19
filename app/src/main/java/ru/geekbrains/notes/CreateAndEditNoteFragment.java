@@ -20,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,6 +34,7 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
     EditText textOfNote; // поле с текстом заметки
     String name; // название заметки
     boolean isEditNow = false; // редактируется ли заметка сейчас
+    boolean isEditNowForSnack = false;
     int myId; // для редактирования (чтобы перезаписывалась именно эта заметка)
     String timeOfCreation; // время создания/редактирования заметки
 
@@ -118,8 +121,14 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
         if (!nameOfNote.getText().toString().equals("")) {
             if (list != null) {
                 name = nameOfNote.getText().toString();
-                for (int i = 0; i < list.toArray().length; i++) {
 
+                if (isEditNowForSnack) {
+                    showSnackBar("Заметка изменена");
+                    isEditNowForSnack = false;
+                } else showSnackBar("Создана новая заметка");
+
+
+                for (int i = 0; i < list.toArray().length; i++) {
                     if (isEditNow & list.get(i).getName().equals(list.get(myId).getName())) { // если заметка в данный момент редактируется  и в списке заметок есть заметка с таким же id, то последняя удаляется
                         list.remove(i);
                         isEditNow = false;
@@ -128,6 +137,8 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
                 }
                 setTimeOfCreation(DateFormat.getTimeInstance().format(Calendar.getInstance().getTime())); // добавляет текущее время
                 list.add(CreateAndEditNoteFragment.this);
+//
+
             }
 ////            ListOfNotesFragment listOfNotesFragment = ListOfNotesFragment.newInstance(list);
 //            RecyclerViewWithNotesFragment recyclerViewWithNotesFragment = RecyclerViewWithNotesFragment.newInstance(list);
@@ -141,6 +152,10 @@ public class CreateAndEditNoteFragment extends Fragment implements View.OnClickL
         }
 
         hideKeyboard();
+    }
+
+    private void showSnackBar(String text) {
+        Snackbar.make(requireActivity().findViewById(R.id.parent_linear_layout), text, Snackbar.LENGTH_LONG).show();
     }
 
     private void hideKeyboard() { // спрятать клавиатуру при переходе в другой фрагмент

@@ -69,7 +69,7 @@ public class RecyclerViewWithNotesFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 CreateAndEditNoteFragment createAndEditNoteFragment = list.get(position);
-
+                createAndEditNoteFragment.isEditNowForSnack = true;
                 if (getActivity() != null)
                     startFragmentDependingOnOrientation(createAndEditNoteFragment);
             }
@@ -81,7 +81,6 @@ public class RecyclerViewWithNotesFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
 
 
         Button btnCreateNewNote; // кнопка "+" (создание новой заметки)
@@ -152,7 +151,7 @@ public class RecyclerViewWithNotesFragment extends Fragment {
         switch (item.getItemId()) {
 
             case R.id.recycler_context_item_change:
-                data.updateCardData(position, new CardData(R.drawable.card10,data.getCardData(position).getTitle() ));
+                data.updateCardData(position, new CardData(R.drawable.card10, data.getCardData(position).getTitle()));
                 adapter.notifyItemChanged(position);
                 return true;
 
