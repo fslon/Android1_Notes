@@ -1,5 +1,7 @@
 package ru.geekbrains.notes;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -156,9 +158,7 @@ public class RecyclerViewWithNotesFragment extends Fragment {
                 return true;
 
             case R.id.recycler_context_item_remove:
-                data.deleteCardData(position);
-                list.remove(position);
-                adapter.notifyItemRemoved(position);
+                showDialog(position);
                 return true;
 
         }
@@ -166,6 +166,25 @@ public class RecyclerViewWithNotesFragment extends Fragment {
 
         return super.onContextItemSelected(item);
     }
+
+    public void showDialog(int position) {
+
+        new AlertDialog.Builder(getContext()).setTitle("Предупреждение").setMessage("Вы действительно хотите удалить заметку?").setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                data.deleteCardData(position);
+                list.remove(position);
+                adapter.notifyItemRemoved(position);
+            }
+        }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).show();
+
+    }
+
 }
 
 
